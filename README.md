@@ -1,24 +1,24 @@
 # install_samba_on_linux_file_sharing_windows
 
-Install Samba on Linux for file sharing with Windows (Linux will host the shared folder)**
+**Install Samba on Linux for file sharing with Windows (Linux will host the shared folder)**
 
 NOTE: You will see several mentions of 'donnadell' in this guide. That is just the name of my machine — replace it with your own username or directory name.
 
-1. sudo apt update
+**1.** sudo apt update
 
-2. sudo apt install samba -y
+**2.** sudo apt install samba -y
 
-3. cd /home/donnadell
+**3.** cd /home/donnadell
 
 /*
 This is just a sample directory, please specify the directory you wish to share with windows
 */
 
-4. sudo chown nobody:nogroup /home/donnadell
+**4.** sudo chown nobody:nogroup /home/donnadell
 
-5. sudo chmod 0775 /home/donnadell
+**5.** sudo chmod 0775 /home/donnadell
 
-6. sudo nano /etc/samba/smb.conf
+**6.** sudo nano /etc/samba/smb.conf
 
 /*
 look for the parameter that has $print or print$ then next to that is to insert the below sample definition and parameters
@@ -32,9 +32,9 @@ look for the parameter that has $print or print$ then next to that is to insert 
    guest ok = yes
    force user = nobody
 
-7. sudo systemctl restart smbd
+**7.** sudo systemctl restart smbd
 
-8. sudo ufw allow 'Samba'
+**8.** sudo ufw allow 'Samba'
 
 /*
 you should probably get some output here
@@ -43,11 +43,11 @@ you should probably get some output here
 --as long as the output is not an error then you are good
 */
 
-9. testparm
+**9.** testparm
 
 --if there are no errors then you are good
 
-10. sudo reboot
+**10.** sudo reboot
 
 
 Access the linux shared directory from your windows machine
@@ -58,13 +58,13 @@ Access the linux shared directory from your windows machine
 --if none of these works then move to next steps
 */
 
-11. sudo chown -R nobody:nogroup /home/donnadell
+**11.** sudo chown -R nobody:nogroup /home/donnadell
 
-12. sudo chmod -R 0775 /home/donnadell
+**12.** sudo chmod -R 0775 /home/donnadell
 
-13. sudo chown -R donnadell:donnadell /home/donnadell
+**13.** sudo chown -R donnadell:donnadell /home/donnadell
 
-14. sudo nano /etc/samba/smb.conf
+**14.** sudo nano /etc/samba/smb.conf
 
 --look for the parameter that has $print or print$ then next to that is to insert the below sample definition and parameters
 
@@ -81,24 +81,24 @@ Access the linux shared directory from your windows machine
    delete readonly = yes
 */
 
-15. sudo systemctl restart smbd
+**15.** sudo systemctl restart smbd
 
 --run testparm
 --if no errors then start back and forth file sharing together with file changes from windows machine
 
 
-Install Samba on Linux for file sharing with Windows (Windows will host the shared folder)**
+**Install Samba on Linux for file sharing with Windows (Windows will host the shared folder)**
 
-1. Prepare the Windows machine
+**1.** Prepare the Windows machine
    Boot up your Windows machine, log in, and create a shared folder. Once this step is complete, proceed to your Linux machine and continue with the instructions below.
 
-2. sudo apt update && sudo apt install smbclient -y
+**2.** sudo apt update && sudo apt install smbclient -y
 
 /*
 Since the situation here is the reverse of the typical Samba setup (Windows is the host, and Linux is the client), smbclient is sufficient as Linux will be accessing the shared folder from the Windows host.
 */
 
-3. smbclient //192.168.137.97/donnadell -U donna
+**3.** smbclient //192.168.137.97/donnadell -U donna
 
 /*
 'smbclient' is a constant in the command.
@@ -109,7 +109,7 @@ Upon executing this command, you will be prompted to enter the password for the 
 */
 
 
-4. Run 'ls' command to confirm access
+**4.** Run 'ls' command to confirm access
 
 /*
 Example output from a tested machine:
@@ -129,13 +129,13 @@ This output confirms that access and connectivity are working. If your output is
 */
 
 
-5. sudo mkdir /home/donnadell/Desktop/donnadell
+**5.** sudo mkdir /home/donnadell/Desktop/donnadell
 
 /*
 This creates a directory where the Windows shared folder will be mounted. You can change the path to wherever you would like the mount point to reside.
 */
 
-6. sudo mount -t cifs //192.168.137.97/donnadell /home/donnadell/Desktop/donnahp -o 'username=donna,password=password,vers=3.0'
+**6.** sudo mount -t cifs //192.168.137.97/donnadell /home/donnadell/Desktop/donnahp -o 'username=donna,password=password,vers=3.0'
 
 /*
 This command mounts the Windows shared folder to the directory you created in step 5.
